@@ -1,6 +1,7 @@
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Mail\EmailOtpNotification;
 
 protected function create(array $data)
 {
