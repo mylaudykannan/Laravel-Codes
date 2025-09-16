@@ -1,0 +1,22 @@
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+protected function create(array $data)
+{
+    $user = User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+        // other fields...
+    ]);
+
+    $otp = rand(100000, 999999);
+    $user->email_otp = $otp;
+    $user->email_otp_expires_at = Carbon::now()->addMinutes(10);
+    $user->save();
+
+    Mail::to($user->email)->send(new EmailOtpNotification($otp));
+
+    return $user;
+}
