@@ -1,0 +1,55 @@
+@extends('admin.layouts.app')
+
+@section('content')
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-xl-9">
+            @include('admin.inc.alert')
+            <div class="card customCard mb-4">
+                <div class="card-header p-0">
+                    <div class="pt-4 pb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="mb-3">
+                                <ol class="breadcrumb breadcrumb-alternate" aria-label="breadcrumbs">
+                                    <li class="breadcrumb-item"><a href="javascript:;">Application</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript:;">Course Types</a></li>
+                                </ol>
+                            </div>
+                            <h5 class="text-capitalize pl-3 mb-0">Create Course Type</h5>
+                        </div>
+                        <div>
+                            <a href="{{URL('admin/course-types')}}" class="btn btn-default mb-0 mr-3 btn-sm text-white">Back</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-2">
+                    <form method="POST" action="{{ url('admin/course-types') }}">
+                        @csrf
+                        <div class="row g-3">
+
+                            <!-- Name -->
+                            <div class="col-md-6">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="form-control" name="title" placeholder="Enter your name" value="">
+
+                            </div>
+                        </div>
+                        <!-- Save Button -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-3 pr-0 d-none d-xl-block">
+            {{-- @include('admin.inc.clockBar') --}}
+        </div>
+    </div>
+</div>
+@endsection
+
+
+@push('scripts')
+
+@endpush
