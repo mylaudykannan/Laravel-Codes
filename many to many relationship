@@ -1,0 +1,66 @@
+1.many to many relationship between course and user table
+- migration command
+php artisan make:migration create_course_user_table --create=course_user
+2. migration code
+
+Schema::create('course_user', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('course_id');
+            //$table->tinyInteger('admin_approval')->default(0)->comment('Approval status: 0 = Pending, 1 = Approved, 2 = Rejected');
+            $table->timestamps();
+        });
+
+3. in user model relationship 
+
+public function appliedCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user')->withTimestamps();
+    }
+
+4. in course model relationship
+
+
+public function applicants()
+    {
+        return $this->belongsToMany(User::class, 'course_user')->withTimestamps();
+    }
+
+5. define apply and canceel function
+//route
+Route::get('apply-course/{course_id}', [App\Http\Controllers\Student\CourseApplicationController::class, 'apply'])->name('course.apply');
+        Route::get('cancel-course/{course_id}', [App\Http\Controllers\Student\CourseApplicationController::class, 'cancel'])->name('course.cancel');
+
+
+//functions in controller
+public function apply($course_id)
+    {
+        $user = Auth::user();
+        $course = Course::findOrFail($course_id);
+
+        // prevent duplicate application
+        if (!$user->appliedCourses()->where('course_id', $course_id)->exists()) {
+            $user->appliedCourses()->attach($course_id);
+        }
+
+        return back()->with('status', 'You have successfully applied for the course!');
+    }
+
+    public function cancel($course_id)
+    {
+        $user = Auth::user();
+        $user->appliedCourses()->detach($course_id);
+
+        return back()->with('status', 'Application removed successfully.');
+    }
+
+6. check user applied course in blade
+ @if(Auth::user()->appliedCourses->contains($course->id))
+
+7. get list of courses applied by user
+public function appliedCourses()
+    {
+        $user = Auth::user();
+        $appliedCourses = $user->appliedCourses()->paginate(1);
+        return view('student.applied-courses', compact('appliedCourses'));
+    }
