@@ -1,0 +1,44 @@
+<ul class="navbar-nav me-auto">
+                        <?php
+        $locale = app()->getLocale();
+        $url =\URL::current();
+
+        $menulang = ($locale=='en')?'':'_'.$locale;
+        $headermenu = \App\Modules\Menu\Models\Menu::where('title', 'main'.$menulang)->first(); //change title according to menu name
+        $headermenuar = (!empty($headermenu))?json_decode($headermenu->content,true):[];
+        ?>
+
+                        @foreach ($headermenuar as $mk => $mv)
+                        <?php
+            $menuactive = '';
+            if (isset($mv['children'])) {
+                $menuchildrenar = collect($mv['children'])
+                    ->pluck('href')
+                    ->toArray();
+                if (in_array($url, $menuchildrenar)) {
+                    $menuactive = 'active';
+                }
+            } elseif ($mv['href'] == $url) {
+                $menuactive = 'active';
+            }
+            ?>
+                        <li class="nav-item @if (isset($mv['children'])) dropdown megaMenu @endif {{ $menuactive }}">
+                            <a class="nav-link @if (isset($mv['children'])) dropdown-toggle @endif" href="{{ $mv['href'] }}" id="navbarDropdown{{ $mk }}" @if (isset($mv['children'])) role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @endif target="{{ $mv['target'] }}">{{ $mv['text'] }}</a>
+                            @if (isset($mv['children']))
+                            <i class="icon-right-arrow mobDwnIcon d-lg-none"></i>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown{{ $mk }}">
+                                @foreach ($mv['children'] as $ck => $cv)
+                                <?php
+                            $activeclass = '';
+                            if ($url == $cv['href']) {
+                                $activeclass = 'active';
+                                $breadcrumbdata = [$mv['text'] => $mv['href'], $cv['text'] => $cv['href']];
+                            }
+                            ?>
+                                <a class="dropdown-item {{ $activeclass }}" href="{{ $cv['href'] }}" target="{{ $mv['target'] }}">{{ $cv['text'] }}</a>
+                                @endforeach
+                            </div>
+                            @endif
+                        </li>
+                        @endforeach
+                    </ul>
