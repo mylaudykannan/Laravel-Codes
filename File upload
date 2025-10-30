@@ -1,0 +1,87 @@
+//single file upload
+<form method="POST" action="{{ url('college-admin/colleges') }}" enctype="multipart/form-data">
+<input type="file" class="form-control" name="image" value="" accept=".jpg, .jpeg, .png">
+#####################################################
+//store function
+$request->validate([
+            'image' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+
+/* Image upload */
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $extension = $image->getClientOriginalExtension();
+            $imagename = uniqid('college_') . '_' . time() . '.' . $extension;
+
+
+            $destinationPath = public_path('collegeimage');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+
+            $image->move($destinationPath, $imagename);
+        }
+        /* End image upload */
+#####################################################
+//update function
+$request->validate([
+'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+
+/* Image upload */
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $extension = $image->getClientOriginalExtension();
+            $imagename = uniqid('college_') . '_' . time() . '.' . $extension;
+
+
+            $destinationPath = public_path('collegeimage');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+
+            $image->move($destinationPath, $imagename);
+            $data['image'] = $imagename;//for storing in db
+
+            // Rename old image
+            $filename = public_path('collegeimage/' . $college->image);
+            if (\File::exists($filename)) {
+                rename(public_path('collegeimage/' . $college->image), public_path('collegeimage/removed_' . time() . '_' . $college->image));
+            }
+        }
+        /* End image upload */
+
+##########################
+//multiple file
+<input type="file" class="form-control" placeholder="Document" name="document[]" accept=".jpg,.jpeg,.png,.pdf">
+<input type="file" class="form-control" placeholder="Document" name="document[]" accept=".jpg,.jpeg,.png,.pdf">
+
+store function
+$request->validate([
+'title.*' => 'required|string|max:255',
+            'document.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+
+
+$titles = $request->title;
+        $documents = $request->file('document');
+foreach ($titles as $index => $title) {
+            if (!isset($documents[$index])) continue; // skip if no file uploaded
+
+            $file = $documents[$index];
+
+            // Generate custom unique name
+            $extension = $file->getClientOriginalExtension();
+            $filename = uniqid('doc_') . '_' . time() . '.' . $extension;
+
+            // Save file in public/documents folder
+            $destinationPath = public_path('documents');
+            $file->move($destinationPath, $filename);
+
+            // Save record in DB
+            UserDocument::create([
+                'title' => $title,
+                'document' => $filename,
+                'user_id' => Auth::id(),
+            ]);
+        }
