@@ -1,0 +1,39 @@
+{{-- Overview --}}
+<section id="overview-section" class="container py-5 pt-0">
+    @foreach ($pagesectionVal as $psk => $psv)
+    <?php
+            $content = json_decode($psv['content'], true);
+            $title = $content['title'] ?? '';
+            $content = $content['content'] ?? '';
+            ?>
+    <h2 class="text-center mb-4 fw-bold">{{$title}}</h2>
+    {!! $content !!}
+    @endforeach
+
+
+    <div class="row g-4">
+
+        <?php
+            $bladepage = \App\Modules\Page\Models\Page::where('pointslug', 'home-overview-items')->first(); //here home-overview-items is page slug
+            if($bladepage){
+                $bladepagesections = \App\Modules\Page\Models\PageSection::where('page_id', $bladepage->id)->get()->groupBy('type');
+            }
+            ?>
+        @if(isset($bladepagesections['items'])) //here items is section key
+        @foreach ($bladepagesections['items'] as $faqk => $faqv)
+        <?php
+                        $contentFaq = json_decode($faqv['content'], true);
+                        $title = $contentFaq['title'] ?? '';
+                        $subtitle = $contentFaq['subtitle'] ?? '';
+                        ?>
+        <div class="col-md-4">
+            <div class="info-card">
+                <div class="info-title">{{ $title }}</div>
+                <p>{{ $subtitle }}</p>
+            </div>
+        </div>
+        @endforeach
+        @endif
+    </div>
+</section>
+{{-- End Overview --}}
