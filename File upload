@@ -24,6 +24,9 @@ $request->validate([
         /* End image upload */
 #####################################################
 //update function
+
+use Illuminate\Support\Facades\File;
+
 $request->validate([
 'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
 
@@ -44,9 +47,19 @@ $request->validate([
             $data['image'] = $imagename;//for storing in db
 
             // Rename old image
-            $filename = public_path('collegeimage/' . $college->image);
-            if (\File::exists($filename)) {
-                rename(public_path('collegeimage/' . $college->image), public_path('collegeimage/removed_' . time() . '_' . $college->image));
+            $oldPath = public_path('collegeimage/' . $college->image);
+            $newPath = public_path('collegeimage/removed_' . time() . '_' . $college->image);
+
+            if (File::exists($oldPath) && File::isFile($oldPath)) {
+                clearstatcache(true, $oldPath);
+
+                try {
+                    File::move($oldPath, $newPath);
+                } catch (\Exception $e) {
+                    // Fallback for Windows locked file
+                    File::copy($oldPath, $newPath);
+                    File::delete($oldPath);
+                }
             }
         }
         /* End image upload */
