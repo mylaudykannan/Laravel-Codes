@@ -1,0 +1,38 @@
+    @extends('layouts.app')
+
+    @section('content')
+        @if (config('page.section.' . $slug))
+            @foreach (config('page.section.' . $slug) as $k => $v)
+                @if (isset($v['template']) && isset($pagesections[$k]))
+                    @include('templates.' . $v['template'], [
+                        'pagesectionVal' => $pagesections[$k],
+                    ])
+                @else
+                    @if (isset($pagesections[$k]))
+                        @foreach ($pagesections[$k] as $kin => $ps)
+                            <?php
+                            $content = json_decode($ps['content'], true);
+                            ?>
+                            {{-- @if (isset($content['title']))
+                                    <h2>{{ $content['title'] }}</h2>
+                                @endif --}}
+                            @if (isset($content['content']))
+                                {!! $content['content'] !!}
+                            @endif
+                        @endforeach
+                    @endif
+                @endif
+            @endforeach
+        @else
+            @foreach ($page['sections'] as $k => $ps)
+                <?php
+                $content = json_decode($ps['content'], true);
+                ?>
+                @if (isset($content['content']))
+                <div class="container py-5">
+                    {!! $content['content'] !!}
+                </div>
+                @endif
+            @endforeach
+        @endif
+    @endsection
