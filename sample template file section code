@@ -1,0 +1,41 @@
+<div id="fadeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <?php $si = 1; ?>
+        @foreach ($pagesectionVal as $psk => $psv)
+            <?php
+            $content = json_decode($psv['content'], true);
+            $image = isset($content['image']) ? asset('gallery/' . $content['image']) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80';
+            $title = $content['title'] ?? '';
+            $subtitle = $content['subtitle'] ?? '';
+            ?>
+            <div class="carousel-item <?php if ($si == 1) {
+                echo 'active';
+            } ?>" style="background-image: url('<?php echo $image; ?>');">
+                <div class="carousel-caption text-start text-white">
+                    <h1><?php echo $title; ?></h1>
+                    <p><?php echo $subtitle; ?></p>
+                </div>
+            </div>
+            <?php $si++; ?>
+        @endforeach
+    </div>
+
+    <div class="carousel-indicators">
+        <?php $si = 0; ?>
+        @foreach ($pagesectionVal as $psk => $psv)
+            <button type="button" data-bs-target="#fadeCarousel" data-bs-slide-to="<?php echo $si; ?>"
+                class="<?php if ($si == 0) {
+                    echo 'active';
+                } ?>" aria-current="true" aria-label="Slide 1"></button>
+            <?php $si++; ?>
+        @endforeach
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#fadeCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#fadeCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
+</div>
