@@ -58,5 +58,5 @@
     @endforeach
     @endif
     {{-- for page custom libraries --}}
-    
+
     @endsection
