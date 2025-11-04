@@ -1,0 +1,74 @@
+config page.php explaination - app\Modules\Page\config\page.php //for page module config
+
+1. this is for hide default content for pages
+'hide-content' => ['home' => true, 'home-overview-items' => true, 'home-faq-items' => true],
+2. this is for hide particular page not visible to frontend by url
+'hide-page' => ['home-overview-items' => true, 'home-faq-items' => true],
+3. for add custom libraries to particular page
+'custom-library' => [
+        'home' => [ //for home page
+            'css' => ['/css/home.css'],
+            'js' => ['/js/home.js'],
+        ]
+    ],
+4. it is for default content - dont change this
+'section' => [
+        'default' => [
+            'content' => [
+                'title' => 'Content',
+                /* 'blade' => 'breadcrump', */
+                // 'static' => true,
+                'fields' => [
+                    'content' => ['validation' => 'required', 'type' => 'editor'] //,'allowed' => 'page'
+                ]
+            ],
+        ],
+
+5. for home page sections
+'section' => 
+        'home' => [ //for home page sections
+            'slider' => [ //for slider section
+                'title' => 'Slider', //section title
+                'template' => 'home.slider', //template to show in frontend
+                'fields' => [
+                    'image' => ['validation' => 'required', 'message' => ['required' => 'Slider image required'], 'type' => 'image'],
+                    'content' => ['validation' => 'required|max:10', 'message' => ['required' => 'Slider content is required', 'max' => 'Letters not greater than 10'], 'type' => 'editor', 'class' => ''] //,'allowed' => 'page'
+                ]
+            ],
+6. type of fields
+- input, editor, image, button
+7. for fields validation in php 
+'title' => ['validation' => 'required|max:10', 'message' => ['required' => 'Slider image required', 'max' => 'maximum 10 letters only'], 'type' => 'input'],
+//validation => give laravel validation for particlar field
+//message => error message for validation
+
+8. input field arguments
+'title' => ['validation' => 'required', 'type' => 'input', 'label' => 'Title for Navbar', 'class' => 'required myclass', 'attr' => 'data-empty=Enter&nbsp;Title data-err=Invalid&nbsp;
+--
+label => for field label
+class => add class to input field
+attr => custom attributes to input - space for sperate two atirbutes, attributes values should not has space
+	instead use &nbsp;
+
+9. editor field arguments
+
+'content' => ['validation' => 'required', 'message' => ['required' => 'Slider content is required'], 'type' => 'editor', 'class' => 'required', 'label' => 'Slider Content'] //,'allowed' => 'page'
+	
+label => for field label
+class => add class to input field
+
+10. image field arguments
+
+'image' => ['validation' => 'required', 'type' => 'image', 'class' => 'required myclass', 'label' => 'Slider Image', 'attr' => 'data-empty=Select&nbsp;Image data-err=Invalid&nbsp;text', 'size-message' => '250 x 250'],
+
+label => for field label
+class => add class to image input field
+attr => custom attributes to input - space for sperate two atirbutes, attributes values should not has space
+	instead use &nbsp;
+size-message => adding message for image size in label
+
+11. button field arguments
+'nav' => ['validation' => '', 'type' => 'button', 'link' => '/admin/menu?menu=homesticky', 'label' => 'Sticky Menu'],
+
+link => link for {{URL()}}
+label => button text
