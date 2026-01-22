@@ -1,0 +1,13 @@
+<?php
+            $bladepage = \App\Modules\Page\Models\Page::where('pointslug', 'footer')->first(); //here home-overview-items is page slug
+            if($bladepage){
+                $bladepagesections = \App\Modules\Page\Models\PageSection::where('page_id', $bladepage->id)->get()->groupBy('type');
+            }
+            ?>
+        @if(isset($bladepagesections['content']))
+        @foreach ($bladepagesections['content'] as $faqk => $faqv)
+                      <?php $contentFooter = json_decode($faqv['content'], true);
+                        $content = $contentFooter['content'] ?? '';?>
+                        {!! $content !!}
+        @endforeach
+        @endif
