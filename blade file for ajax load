@@ -1,0 +1,23 @@
+<div class="accordion custom-accordion" id="whyAccordion">
+							@if(isset($pageSections['items']))								
+        @foreach ($pageSections['items'] as $k => $v)
+	 <?php $content = json_decode($v['content'], true);
+	 $titleField = $content['title'] ?? '';
+                        $contentField = $content['content'] ?? '';?>
+							<div class="accordion-item">
+								<h2 class="accordion-header">
+									<button class="accordion-button @if($k!=0) collapsed @endif" data-bs-toggle="collapse" data-bs-target="#why{{$k+1}}">
+										<span>{{$k+1}}. {{ $titleField }}</span>
+									</button>
+								</h2>
+								<div id="why{{$k+1}}" class="accordion-collapse collapse @if($k==0)show @endif" data-bs-parent="#whyAccordion">
+									<div class="accordion-body">
+									{!! $contentField !!}
+									</div>
+								</div>
+							</div>
+							@endforeach
+							@endif
+							
+							
+						</div>
