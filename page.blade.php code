@@ -1,4 +1,10 @@
-    @extends('layouts.app')
+@extends(config('page.layout.'.$page['layout']))
+
+@section('header')
+<meta name="keywords" content="{{ $page['meta_keywords'] ?? '' }}">
+<meta name="description" content="{{ $page['meta_description'] ?? '' }}">
+{!! $page['analytics'] ?? '' !!}
+@endsection
 
     @section('content')
     @if (config('page.section.' . $slug))
