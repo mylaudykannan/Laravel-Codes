@@ -1,5 +1,15 @@
 config page.php explaination - app\Modules\Page\config\page.php //for page module config
 
+A. this is for layout options
+'layout' =>[
+		1 => 'layouts.app',
+		2 => 'layouts.student',
+	]
+B. this is for page blade option
+'blade' =>[
+		1 => 'page',
+		2 => 'container-page',
+	]
 1. this is for hide default content for pages
 'hide-content' => ['home' => true, 'home-overview-items' => true, 'home-faq-items' => true],
 2. this is for hide particular page not visible to frontend by url
