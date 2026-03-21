@@ -1,0 +1,20 @@
+$(document).ready(function () {
+    $('.ajax-content').each(function () {
+        let $div = $(this);
+        let path = $div.data('path'); // e.g. "/ajax/home-colleges"
+
+        if (path) {
+            $.ajax({
+                url: path,
+                type: 'GET',
+                success: function (response) {
+                    $div.replaceWith(response); // update the div content
+                },
+                error: function (xhr, status, error) {
+                    $div.html('<div class="text-danger">Error loading content</div>');
+                    console.error('AJAX Error:', error);
+                }
+            });
+        }
+    });
+});
