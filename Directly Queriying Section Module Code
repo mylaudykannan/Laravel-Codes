@@ -1,0 +1,17 @@
+<?php
+                $bladesection = \App\Modules\Section\Models\Section::where('pointslug', 'home-overview-items')->first(); //here home-overview-items is section slug
+                if ($bladesection) {
+                    $bladesectionsections = \App\Modules\Section\Models\SectionSection::where('section_id', $bladesection->id)->get()->groupBy('type');
+                }
+                ?>
+                @if (isset($bladesectionsections['items']))
+                    @foreach ($bladesectionsections['items'] as $hk => $hv)
+                        <?php
+                        $contentHeader = json_decode($hv['content'], true);
+                        $logo = $contentHeader['image'] ?? '';//field
+                        ?>
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                            <img src="{{ URL('gallery/' . $logo) }}" style="height:80px; width:auto;" />
+                        </a>
+                    @endforeach
+                @endif
