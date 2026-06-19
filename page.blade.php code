@@ -13,6 +13,8 @@
     @include('templates.' . $v['template'], [
     'pagesectionVal' => $pagesections[$k],
     ])
+@elseif(isset($v['template']) && !isset($pagesections[$k]))
+                @include('templates.' . $v['template'])
     @else
     @if (isset($pagesections[$k]))
     @foreach ($pagesections[$k] as $kin => $ps)
