@@ -53,7 +53,7 @@ B. this is for page blade option
 //message => error message for validation
 
 8. input field arguments
-'title' => ['validation' => 'required', 'type' => 'input', 'label' => 'Title for Navbar', 'class' => 'required myclass', 'attr' => 'data-empty=Enter&nbsp;Title data-err=Invalid&nbsp;
+'title' => ['validation' => 'required', 'type' => 'input', 'label' => 'Title for Navbar', 'class' => 'required myclass', 'attr' => 'data-empty=Enter&nbsp;Title data-err=Invalid&nbsp;]
 --
 label => for field label
 class => add class to input field
