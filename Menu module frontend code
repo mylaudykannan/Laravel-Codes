@@ -23,10 +23,10 @@
             }
             ?>
                         <li class="nav-item @if (isset($mv['children'])) dropdown megaMenu @endif {{ $menuactive }}">
-                            <a class="nav-link @if (isset($mv['children'])) dropdown-toggle @endif" href="{{ $mv['href'] }}" id="navbarDropdown{{ $mk }}" @if (isset($mv['children'])) role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @endif target="{{ $mv['target'] }}">{{ $mv['text'] }}</a>
+                            <a class="nav-link @if (isset($mv['children'])) dropdown-toggle @endif" href="{{ $mv['href'] }}" id="navbarDropdown{{ $mk }}" @if (isset($mv['children'])) role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @endif target="{{ $mv['target'] }}">{{ $mv['text'] }}</a>
                             @if (isset($mv['children']))
                             <i class="icon-right-arrow mobDwnIcon d-lg-none"></i>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown{{ $mk }}">
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown{{ $mk }}">
                                 @foreach ($mv['children'] as $ck => $cv)
                                 <?php
                             $activeclass = '';
@@ -35,9 +35,9 @@
                                 $breadcrumbdata = [$mv['text'] => $mv['href'], $cv['text'] => $cv['href']];
                             }
                             ?>
-                                <a class="dropdown-item {{ $activeclass }}" href="{{ $cv['href'] }}" target="{{ $mv['target'] }}">{{ $cv['text'] }}</a>
+                                <li><a class="dropdown-item {{ $activeclass }}" href="{{ $cv['href'] }}" target="{{ $mv['target'] }}">{{ $cv['text'] }}</a></li>
                                 @endforeach
-                            </div>
+                            </ul>
                             @endif
                         </li>
                         @endforeach
