@@ -1,0 +1,17 @@
+//resources\views\emails\consultation.blade.php
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consultation</title>
+</head>
+<body>
+    <h2>Hello!</h2>
+    <p>Name: {{ $args['fullname']}} </p>
+    <p>Email: {{ $args['email']}} </p>
+    <p>Phone: {{ $args['phone']}} </p>
+    <p>Study Destination: {{ $args['preferred_study_destination']}} </p>
+    <p>Study Level: {{ $args['preferred_study_level']}} </p>
+    <p>Regards,</p>
+    <p>Ria Overseas</p>
+</body>
+</html>
