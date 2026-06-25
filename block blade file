@@ -1,36 +1,38 @@
 @if (config('block.section.' . $blockslug))
-        @foreach (config('block.section.' . $blockslug) as $k => $v)
-            @if (isset($v['template']) && isset($blocksections[$k]))
-                @include('templates.' . $v['template'], [
-                    'blocksectionVal' => $blocksections[$k],
-                ])
-            @elseif(isset($v['template']) && !isset($blocksections[$k]))
-                @include('templates.' . $v['template'])
-            @else
-                @if (isset($blocksections[$k]))
-                    @foreach ($blocksections[$k] as $kin => $ps)
-                        <?php
-                        $content = json_decode($ps['content'], true);
-                        ?>
-                        {{-- @if (isset($content['title']))
+    @foreach (config('block.section.' . $blockslug) as $k => $v)
+        @if (isset($v['template']) && isset($blocksections[$k]))
+            @include('templates.' . $v['template'], [
+                'blocksectionVal' => $blocksections[$k],
+            ])
+        @elseif(isset($v['template']) && !isset($blocksections[$k]))
+            @include('templates.' . $v['template'])
+        @else
+            @if (isset($blocksections[$k]))
+                @foreach ($blocksections[$k] as $kin => $ps)
+                    <?php
+                    $content = json_decode($ps['content'], true);
+                    ?>
+                    {{-- @if (isset($content['title']))
                                     <h2>{{ $content['title'] }}</h2>
 @endif --}}
-                        @if (isset($content['content']))
-                            {!! $content['content'] !!}
-                        @endif
-                    @endforeach
-                @endif
+                    @if (isset($content['content']))
+                        {!! $content['content'] !!}
+                    @endif
+                @endforeach
             @endif
-        @endforeach
-    @else
+        @endif
+    @endforeach
+@else
+    @if ($block)
         @foreach ($block['sections'] as $k => $ps)
             <?php
             $content = json_decode($ps['content'], true);
             ?>
             @if (isset($content['content']))
                 {{-- <div class="container py-5"> --}}
-                    {!! $content['content'] !!}
+                {!! $content['content'] !!}
                 {{-- </div> --}}
             @endif
         @endforeach
     @endif
+@endif
