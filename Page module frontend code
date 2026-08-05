@@ -4,9 +4,24 @@ Route::get('/{slug}', [App\Http\Controllers\HomeController::class, 'page']);
 HomeController.php
 use App\Modules\Page\Models\Page;
 public function page($slug){
+        if (config('page.hide-page.' . $slug)) {
+            abort(404);
+        }
         $page = new Page();
         $page = $page->getPage($slug);
-        return view('page', ['page' => $page]);
+        if (!$page)
+            abort(404);
+        $data = [];
+        if ($slug == 'home') { //for home page values
+            //masters
+            /* $data['courseSubjects'] = CourseSubject::all();
+            $data['courseTypes'] = CourseType::all();
+            $data['degreeLevels'] = DegreeLevel::all(); */
+        }
+
+        $pagesections = PageSection::where('page_id', $page->id)->orderBy('order', 'ASC')->get()->groupBy('type');
+
+        return view(config('page.blade.' . $page->blade), ['page' => $page, 'pagesections' => $pagesections, 'slug' => $slug, 'data' => $data]);
     }
 ----------------
 page.blade.php
