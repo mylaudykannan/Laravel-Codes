@@ -3,6 +3,7 @@ Route::get('/{slug}', [App\Http\Controllers\HomeController::class, 'page']);
 ----------
 HomeController.php
 use App\Modules\Page\Models\Page;
+use App\Modules\Page\Models\PageSection;
 public function page($slug){
         if (config('page.hide-page.' . $slug)) {
             abort(404);
