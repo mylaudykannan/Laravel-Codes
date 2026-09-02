@@ -1,0 +1,21 @@
+public function service($slug)
+    {
+        if (config('service.hide-service.' . $slug)) {
+            abort(404);
+        }
+        $service = new Service();
+        $service = $service->getService($slug);
+        if (!$service)
+            abort(404);
+        $data = [];
+        if ($slug == 'home') { //for home service values
+            //masters
+            /* $data['courseSubjects'] = CourseSubject::all();
+            $data['courseTypes'] = CourseType::all();
+            $data['degreeLevels'] = DegreeLevel::all(); */
+        }
+
+        $servicesections = ServiceSection::where('service_id', $service->id)->orderBy('order', 'ASC')->get()->groupBy('type');
+
+        return view(config('service.blade.' . $service->blade), ['service' => $service, 'servicesections' => $servicesections, 'slug' => $slug, 'data' => $data]);
+    }
