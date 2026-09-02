@@ -1,0 +1,92 @@
+@extends(config('service.layout.' . $page->layout))
+
+@push('head')
+    <meta name="description" content="{{ $page['meta_description'] }}">
+    <meta name="keywords" content="{{ $page['meta_keywords'] }}">
+    {!! $page['analytics'] !!}
+@endpush
+
+@section('content')
+    {{-- @if ($slug != 'home') --}}
+    <!-- START SECTION TOP -->
+    <section class="section-top"
+        style="background-image: url({{ asset('gallery/' . $page->image) }});background-size:cover; background-position: center center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12 text-center">
+                    <div class="section-top-title">
+                        <h1>{{ $page->title }}</h1>
+                    </div>
+                </div><!--- END COL -->
+            </div><!--- END ROW -->
+        </div><!--- END CONTAINER -->
+    </section>
+    <!-- END SECTION TOP -->
+    {{-- @endif --}}
+
+
+    <section class="service-page-section py-5 pt-0">
+        <div class="container">
+
+            {{-- <div class="text-center mb-5">
+                <?php
+                /* echo '<pre>';
+                    print_r($page['sections']);
+                    echo '</pre>';
+                    exit(); */
+                ?>
+                @foreach ($page['sections'] as $k => $ps)
+                    <?php
+                    $content = json_decode($ps['content'], true);
+                    ?>
+                    {!! $content['body'] !!}
+                @endforeach
+            </div> --}}
+
+            <div class="row g-4 servicerow section-animation fadeup">
+
+                @foreach ($services as $serviceSingle)
+                    <!-- Card -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-card">
+
+                            <div class="service-img">
+                                <img src="{{ asset('gallery/' . $serviceSingle->image) }}" class="img-fluid w-100"
+                                    alt="">
+                                {{-- <div class="wave"><img src="{{ asset('img/wave-design.png') }}" /></div> --}}
+                            </div>
+
+                            <div class="service-content">
+                                <p class="mb-3">
+                                    {{ date('F j, Y', strtotime($serviceSingle->created_at)) }}
+                                </p>
+
+                                <h3 class="service-heading blue-color mb-2">
+                                    {!! $serviceSingle->title !!}
+                                </h3>
+
+                                <a href="{{ URL('service/' . $serviceSingle->slug) }}" class="btn service-btn rounded-2">
+                                    Read More
+                                    <i class="bi bi-arrow-up-right"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </section>
+
+
+
+    {{ $services->links('pagination.admin') }}
+@endsection
