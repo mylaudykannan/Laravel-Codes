@@ -40,7 +40,9 @@ B. this is for page blade option
             'slider' => [ //for slider section
                 'title' => 'Slider', //section title
                 'template' => 'home.slider', //template to show in frontend
+				'firststatic' => true, //maintitle
                 'fields' => [
+					'maintitle' => ['firststatic' => true, 'validation' => 'required', 'type' => 'input', 'label' => 'Main Title', 'class' => 'required', 'attr' => 'data-empty=Enter&nbsp;Title data-err=Invalid&nbsp;text'], //,'allowed' => 'page'
                     'image' => ['validation' => 'required', 'message' => ['required' => 'Slider image required'], 'type' => 'image'],
                     'content' => ['validation' => 'required|max:10', 'message' => ['required' => 'Slider content is required', 'max' => 'Letters not greater than 10'], 'type' => 'editor', 'class' => ''] //,'allowed' => 'page'
                 ]
