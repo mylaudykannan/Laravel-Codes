@@ -1,0 +1,84 @@
+@extends(config('service.layout.' . $service->layout))
+
+@push('head')
+    <meta name="description" content="{{ $service['meta_description'] }}">
+    <meta name="keywords" content="{{ $service['meta_keywords'] }}">
+    {!! $service['analytics'] !!}
+@endpush
+
+@section('content')
+    @if ($slug != 'home')
+        <section class="section-top"
+        style="background-image: url({{ asset('gallery/' . $service->image) }});background-size:cover; background-position: center center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12 text-center">
+                    <div class="section-top-title">
+                        <h1>{{ $service->title }}</h1>
+                    </div>
+                </div><!--- END COL -->
+            </div><!--- END ROW -->
+        </div><!--- END CONTAINER -->
+    </section>
+    @endif
+    @if (config('service.section.' . $slug))
+        @foreach (config('service.section.' . $slug) as $k => $v)
+            @if (isset($v['template']) && isset($servicesections[$k]))
+                @include('templates.' . $v['template'], [
+                    'servicesectionVal' => $servicesections[$k],
+                ])
+            @elseif(isset($v['template']) && !isset($servicesections[$k]))
+                @include('templates.' . $v['template'])
+            @else
+                @if (isset($servicesections[$k]))
+                    @foreach ($servicesections[$k] as $kin => $ps)
+                        <?php
+                        $content = json_decode($ps['content'], true);
+                        ?>
+                        {{-- @if (isset($content['title']))
+                                    <h2>{{ $content['title'] }}</h2>
+@endif --}}
+                        @if (isset($content['content']))
+                            {!! $content['content'] !!}
+                        @endif
+                    @endforeach
+                @endif
+            @endif
+        @endforeach
+    @else
+        @foreach ($service['sections'] as $k => $ps)
+            <?php
+            $content = json_decode($ps['content'], true);
+            ?>
+            @if (isset($content['content']))
+                {{-- <div class="container py-5"> --}}
+                {!! $content['content'] !!}
+                {{-- </div> --}}
+            @endif
+        @endforeach
+    @endif
+@endsection
+@section('scripts')
+
+    {{-- for service custom libraries --}}
+    @if (config('service.custom-library.' . $slug . '.css'))
+        @foreach (config('service.custom-library.' . $slug . '.css') as $k => $v)
+            @if (str_starts_with($v, 'http'))
+                <link rel="stylesheet" href="{{ $v }}">
+            @else
+                <link rel="stylesheet" href="{{ asset($v) }}">
+            @endif
+        @endforeach
+    @endif
+    @if (config('service.custom-library.' . $slug . '.js'))
+        @foreach (config('service.custom-library.' . $slug . '.js') as $k => $v)
+            @if (str_starts_with($v, 'http'))
+                <script src="{{ $v }}"></script>
+            @else
+                <script src="{{ asset($v) }}"></script>
+            @endif
+        @endforeach
+    @endif
+    {{-- for service custom libraries --}}
+
+@endsection
