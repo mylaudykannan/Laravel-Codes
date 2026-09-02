@@ -1,0 +1,12 @@
+public function serviceList($slug = 'service')
+    {
+        $page = new Page();
+        $page = $page->getPage($slug);
+        if (!$page)
+            abort(404);
+        // $pagesections = PageSection::where('page_id', $page->id)->orderBy('order', 'ASC')->get()->groupBy('type');
+
+
+        $services = Service::orderBy('created_at', 'DESC')->paginate(3);
+        return view('service-list', ['services' => $services, 'page' => $page]);
+    }
